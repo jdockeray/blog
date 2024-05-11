@@ -2,6 +2,7 @@
 title: "Work Collection"
 description: "How to add work experience."
 date: "Mar 19 2024"
+draft: true
 ---
 
 The `work` collections is found in `src/content/work`.
@@ -40,7 +41,7 @@ Metadata fields
 | dateStart   | Yes | string  | Date string that can be parsed to a date.        |
 | dateEnd     | Yes | string  | Date string that can be parsed to a date.        |
 
-\* _Note: If you are still employed at company, for dateEnd you can enter Current, 
+\* _Note: If you are still employed at company, for dateEnd you can enter Current,
 Now or Present instead of a date._
 
 All that's left to do is write your content under the metadata.

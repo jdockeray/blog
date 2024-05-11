@@ -2,6 +2,7 @@
 title: "Markdown syntax guide"
 description: "Get started writing content in markdown."
 date: "Mar 17 2024"
+draft: true
 ---
 
 ---
@@ -51,7 +52,7 @@ I think I'll use it to format all of my content from now on.
 Use double `*` or `_` to denote bold text.
 
 ```md
-it was the **best** of times, 
+it was the **best** of times,
 it was the __worst__ of times
 ```
 It was the **best** of times,<br/>
@@ -64,7 +65,7 @@ it was the __worst__ of times
 Use single `*` to denote italic text.
 
 ```md
-it was the age of *wisdom*, 
+it was the age of *wisdom*,
 it was the age of *foolishness*
 ```
 it was the age of *wisdom*,<br/>
@@ -77,10 +78,10 @@ it was the age of *foolishness*
 Use `*`, `**` and `_` to combine effects.
 
 ```md
-it was the season of ***light***, 
+it was the season of ***light***,
 it was the season of *__darkness__*
 ```
-it was the season of ***light***,<br/> 
+it was the season of ***light***,<br/>
 it was the season of *__darkness__*
 
 ---
@@ -392,6 +393,3 @@ https://www.markdownguide.org/basic-syntax
 https://www.markdownguide.org/extended-syntax/
 
 ---
-
-
-
