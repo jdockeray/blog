@@ -1,14 +1,15 @@
-![Astro Nano](_astro_nano.png)
+
+## ✨ Forked From Astro Nano
 
 Astro Nano is a static, minimalist, lightweight, lightning fast portfolio and blog theme.
 
-Built with Astro, Tailwind and Typescript, an no frameworks.
+Built with Astro, Tailwind and Typescript, and no frameworks.
 
-It was designed as an even more minimal theme than my popular theme [Astro Sphere](https://github.com/markhorn-dev/astro-sphere)
+It was designed as an even more minimal theme than the other popular theme [Astro Sphere](https://github.com/markhorn-dev/astro-sphere)
 
-## 🚀 Deploy your own
+## 🚀 Deploy
 
-[![Deploy with Vercel](_deploy_vercel.svg)](https://vercel.com/new/clone?repository-url=https://github.com/markhorn-dev/astro-nano)  [![Deploy with Netlify](_deploy_netlify.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/markhorn-dev/astro-nano)
+To deploy the latest version, push the main branch to the remote GitHub repository.
 
 ## 📋 Features
 
@@ -27,13 +28,10 @@ It was designed as an even more minimal theme than my popular theme [Astro Spher
 - ✅ MDX Support (components in your markdown)
 
 ## 💯 Lighthouse score
-![Astro Nano Lighthouse Score](_lighthouse.png)
-
-## 🕊️ Lightweight
-No frameworks or added bulk
+TODO add Lighthouse score
 
 ## ⚡︎ Fast
-Rendered in ~40ms on localhost
+TODO add localhost render time
 
 ## 📄 Configuration
 

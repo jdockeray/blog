@@ -8,52 +8,52 @@ import BackToPrev from "@components/BackToPrev.astro";
 import Link from "@components/Link.astro";
 
 export async function getStaticPaths() {
-  const projects = (await getCollection("projects"))
-    .filter(post => !post.data.draft)
+  const field_notes = (await getCollection("field_notes"))
+    .filter(field_note => !field_note.data.draft)
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-  return projects.map((project) => ({
-    params: { slug: project.slug },
-    props: project,
+  return field_notes.map((field_note) => ({
+    params: { slug: field_note.slug },
+    props: field_note,
   }));
 }
-type Props = CollectionEntry<"projects">;
+type Props = CollectionEntry<"field_notes">;
 
-const project = Astro.props;
-const { Content } = await project.render();
+const field_note = Astro.props;
+const { Content } = await field_note.render();
 ---
 
-<PageLayout title={project.data.title} description={project.data.description}>
+<PageLayout title={field_note.data.title} description={field_note.data.description}>
   <Container>
     <div class="animate">
-      <BackToPrev href="/projects">
-        Back to projects
+      <BackToPrev href="/field_notes">
+        Back to field_notes
       </BackToPrev>
     </div>
     <div class="space-y-1 my-10">
       <div class="animate flex items-center gap-1.5">
         <div class="font-base text-sm">
-          <FormattedDate date={project.data.date} />
+          <FormattedDate date={field_note.data.date} />
         </div>
         &bull;
         <div class="font-base text-sm">
-          {readingTime(project.body)}
+          {readingTime(field_note.body)}
         </div>
       </div>
       <div class="animate text-2xl font-semibold text-black dark:text-white">
-        {project.data.title}
+        {field_note.data.title}
       </div>
-      {(project.data.demoURL || project.data.repoURL) && (
+      {(field_note.data.demoURL || field_note.data.repoURL) && (
         <nav class="animate flex gap-1">
-          {project.data.demoURL && (
-            <Link href={project.data.demoURL} external>
+          {field_note.data.demoURL && (
+            <Link href={field_note.data.demoURL} external>
               demo
             </Link>
           )}
-          {project.data.demoURL && project.data.repoURL && (
+          {field_note.data.demoURL && field_note.data.repoURL && (
             <span>/</span>
           )}
-          {project.data.repoURL && (
-            <Link href={project.data.repoURL} external>
+          {field_note.data.repoURL && (
+            <Link href={field_note.data.repoURL} external>
               repo
             </Link>
           )}
