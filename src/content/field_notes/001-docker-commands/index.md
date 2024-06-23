@@ -1,77 +1,107 @@
 ---
-title: "Astro Sphere"
-description: "Portfolio and blog build with astro."
+title: "CMD and ENTRYPOINT"
+description: "Navigating start commands"
 date: "Mar 18 2024"
-demoURL: "https://astro-sphere-demo.vercel.app"
-repoURL: "https://github.com/markhorn-dev/astro-sphere"
 draft: false
 ---
+Let's start with a simple command:
+```sh
+echo hello world
+```
 
-![Astro Sphere Lighthouse Score](/astro-sphere.jpg)
+Now have a look at the following combinations of dockers `CMD` and `ENTRYPOINT`:
 
-Astro Sphere is a static, minimalist, lightweight, lightning fast portfolio and blog theme based on my personal website.
+```dockerfile
+FROM alpine AS example_0
+ENTRYPOINT ["echo", "Hello"]
+CMD ["World"]
 
-It is primarily Astro, Tailwind and Typescript, with a very small amount of SolidJS for stateful components.
+FROM alpine AS example_1
+ENTRYPOINT ["echo", "Hello", "World"]
 
-## 🚀 Deploy your own
+FROM alpine AS example_2
+CMD ["echo", "Hello", "World"]
 
-<div class="flex gap-2">
-  <a target="_blank" aria-label="Deploy with Vercel" href="https://vercel.com/new/clone?repository-url=https://github.com/markhorn-dev/astro-sphere">
-    <img src="/deploy_vercel.svg" />
-  </a>
-  <a target="_blank" aria-label="Deploy with Netlify" href="https://app.netlify.com/start/deploy?repository=https://github.com/markhorn-dev/astro-sphere">
-    <img src="/deploy_netlify.svg" />
-  </a>
-</div>
+FROM alpine AS example_3
+ENTRYPOINT echo "Hello ${2:1:-1}"
+CMD "World"
 
-## 📋 Features
+FROM alpine AS example_4
+ENTRYPOINT echo "Hello World"
 
-- ✅ 100/100 Lighthouse performance
-- ✅ Responsive
-- ✅ Accessible
-- ✅ SEO-friendly
-- ✅ Typesafe
-- ✅ Minimal style
-- ✅ Light/Dark Theme
-- ✅ Animated UI
-- ✅ Tailwind styling
-- ✅ Auto generated sitemap
-- ✅ Auto generated RSS Feed
-- ✅ Markdown support
-- ✅ MDX Support (components in your markdown)
-- ✅ Searchable content (posts and projects)
+FROM alpine AS example_5
+CMD echo "Hello World"
+```
 
-## 💯 Lighthouse score
-![Astro Sphere Lighthouse Score](/lighthouse.png)
+If I run these images, they will all output `Hello World`. Don't believe me? Use the docker-compose in the gist and try it out for yourself. After running `docker compose up` you will see the following:
 
-## 🕊️ Lightweight
-All pages under 100kb (including fonts)
+![Docker compose output showing 5 containers printing hello world](./001-docker-commands-01.png)
 
-## ⚡︎ Fast
-Rendered in ~40ms on localhost
+I always need to remember the differences between these permutations and get confused about the correct choice. So, let's demystify this madness, break down some key choices, and identify sensible defaults.
 
-## 📄 Configuration
+## Shell vs Exec
+### Links
+- Docker [docs](https://docs.docker.com/reference/dockerfile/#shell-and-exec-form)
 
-The blog posts on the demo serve as the documentation and configuration.
+### Shell Style
+Shell style commands run in a sub process, the syntax is more liberal. The following is an example of the shell syntax:
 
-## 💻 Commands
+```docker
+ENTRYPOINT echo "Hello ${2:1:-1}"
+```
 
-All commands are run from the root of the project, from a terminal:
+### Exec Style
+Exec-style commands are passed through an array. The syntax is stricter, and the command is expected to be in the order of `command`, `flags`, and `arguments`. Exec commands run in the same main process. A new layer is added to the image for each exec command.
 
-Replace npm with your package manager of choice. `npm`, `pnpm`, `yarn`, `bun`, etc
+```docker
+ENTRYPOINT ["echo", "Hello", "World"]
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run sync`            | Generates TypeScript types for all Astro modules.|
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-| `npm run lint`            | Run ESLint                                       |
-| `npm run lint:fix`        | Auto-fix ESLint issues                           |
+### Sensible Defaults
+- `RUN`: Use shell style because it improves readability and provides a command shell by default.
+- `CMD` and `ENTRYPOINT`: Use exec style so that your executables run in the main process. Also, exec style is the only way to pass `CMD some_arg` and `docker run some_arg` arguments to the executable.
 
-## 🏛️ License
+## CMD and ENTRYPOINT
 
-MIT
+### ENTRYPOINT
+The entry point is the executable of a docker container. Container developers use the entry point to set the default behaviour. The entry point is much harder to override using the docker run command. Here are some example entries:
+
+```docker
+# official nodejs image
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+# custom python image
+ENTRYPOINT ["python3"]
+
+# npm based image
+ENTRYPOINT ["npm"]
+```
+
+### CMD
+The [docker documentation](https://docs.docker.com/reference/dockerfile/) specifies that:
+
+> "The CMD instruction sets the command to be executed when running a container from an image."
+
+When used in conjunction with `ENTRYPOINT`, the `CMD` instructions set arguments to run for an executable.
+
+If `npm` was set as the executable, some example commands might be `start`, `test`, and `format`. Here is another example using Python. I set the executable to be  `ENTRYPOINT [ "python" ]` this allows for the following docker-compose setup:
+
+```yaml
+test:
+    build:
+      context: .
+    command: ["-m", "pytest"]
+
+  black:
+    build:
+      context: .
+    command: ["-m", "black", "--check", "."]
+
+  flake8:
+    build:
+      context: .
+    command: ["-m", "flake8", "."]
+```
+
+### Sensible Defaults
+When selecting an executable for your project, consider combinations that support different utilities and applications such as formatting, testing, and running applications. If you can, be specific and narrow down your choices, for example, using `ENTRYPOINT ["npm"]`. If you want to maximize compatibility, you can set your entry point as an interactive base or shell prompt, for example, `ENTRYPOINT ["/bin/bash"]`.

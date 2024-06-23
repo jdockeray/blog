@@ -42,14 +42,14 @@ const { Content } = await field_note.render();
       <div class="animate text-2xl font-semibold text-black dark:text-white">
         {field_note.data.title}
       </div>
-      {(field_note.data.demoURL || field_note.data.repoURL) && (
+      {(field_note.data.gistURL || field_note.data.repoURL) && (
         <nav class="animate flex gap-1">
-          {field_note.data.demoURL && (
-            <Link href={field_note.data.demoURL} external>
+          {field_note.data.gistURL && (
+            <Link href={field_note.data.gistURL} external>
               demo
             </Link>
           )}
-          {field_note.data.demoURL && field_note.data.repoURL && (
+          {field_note.data.gistURL && field_note.data.repoURL && (
             <span>/</span>
           )}
           {field_note.data.repoURL && (
