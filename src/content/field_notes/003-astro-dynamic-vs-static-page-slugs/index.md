@@ -1,6 +1,6 @@
 ---
 title: "Dynamic vs Static Routes In Astro"
-description: "Not GO(ing) anywhere with James at the helm"
+description: "Handling dynamic routes in Astro JS"
 date: "Mar 10 2025"
 draft: false
 ---
