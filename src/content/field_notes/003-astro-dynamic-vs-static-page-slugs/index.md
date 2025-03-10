@@ -1,3 +1,9 @@
+---
+title: "Dynamic vs Static Routes In Astro"
+description: "Not GO(ing) anywhere with James at the helm"
+date: "Mar 10 2025"
+draft: false
+---
 # Two Approaches to Dynamic Routes in Astro
 
 When building a site with Astro, there are two primary approaches for handling dynamic routes (like blog posts, product pages, etc.). This document outlines both methods with examples and explains when to use each approach.
